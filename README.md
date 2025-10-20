@@ -23,9 +23,11 @@ El sistema **no requiere instalación local** y puede consultarse directamente d
 
 El sistema recibe como entrada un archivo estructurado (`.csv` o `.json`) con indicadores relevantes de cada ciudadano, tales como:
 
-- Calificaciones académicas  
-- Rasgos de personalidad  
-- Hábitos y patrones de comportamiento  
+- Nombre  
+- Rol  
+- Area
+- Desempeño
+- Evaluación 
 
 Estos datos pueden cargarse desde la interfaz o utilizarse a partir de conjuntos de prueba.
 
