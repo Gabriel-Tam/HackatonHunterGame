@@ -93,7 +93,11 @@ El usuario final **no necesita acceso a estas variables** para utilizar el siste
 ## 👥 Equipo
 
 **DistritoG**  
-*Gabriel Tamayo Herrera y colaboradores*  
+*Anguas Pol Enrique Alejandro*
+*Cumi Guzman Brian Azael* 
+*Lopez Ku Luis Fernando*
+*Gabriel Ernesto Tamayo Herrera* 
+*y otros...*   
 Instituto Tecnológico de Mérida  
 
 ---
