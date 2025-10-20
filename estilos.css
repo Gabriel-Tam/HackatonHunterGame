@@ -1,0 +1,188 @@
+/* --- ESTILOS MEJORADOS PARA EL ORÁCULO DEL CAPITOLIO --- */
+
+/* 1. Importar una fuente moderna desde Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
+
+/* 2. Variables de color para un tema cohesivo */
+:root {
+    --background-color: #121212; /* Fondo oscuro */
+    --surface-color: #1e1e1e;   /* Color de las tarjetas */
+    --primary-color: #bb86fc;   /* Color de acento (morado) */
+    --on-surface-color: #e0e0e0; /* Color del texto principal */
+    --on-surface-secondary: #a0a0a0; /* Color del texto secundario */
+}
+
+/* 3. Estilos generales del cuerpo */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--background-color);
+    color: var(--on-surface-color);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    padding-bottom: 70px; /* Debe ser igual a la altura del .fire-container */
+}
+
+/* 4. Encabezado temático */
+header {
+    background: linear-gradient(to right, #1e1e1e, #121212);
+    color: var(--primary-color);
+    text-align: center;
+    padding: 1.5rem 0;
+    border-bottom: 2px solid var(--primary-color);
+    font-weight: 700;
+    letter-spacing: 2px;
+    display: flex;            
+    justify-content: center;  
+    align-items: center;      
+    gap: 1.5rem;
+}
+
+/* 5. Contenedor principal con Flexbox */
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Para que se adapte en pantallas pequeñas */
+    padding: 2rem;
+    gap: 2rem;
+}
+
+.control-panel, .results-area {
+    flex: 1;
+    min-width: 300px; /* Ancho mínimo para responsividad */
+}
+
+.results-area {
+    flex: 2;
+}
+
+/* 6. Diseño de tarjetas (Cards) mejorado */
+.card {
+    background-color: var(--surface-color);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid #333;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(187, 134, 252, 0.2);
+}
+
+.card h3 {
+    color: var(--primary-color);
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+/* 7. Estilos de botones y controles interactivos */
+button, select {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+    border: 1px solid #555;
+    background-color: transparent;
+    color: var(--on-surface-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+button {
+    background-color: var(--primary-color);
+    color: #121212;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+button:hover {
+    background-color: #a362ea;
+}
+
+#sample-data-btn {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+#sample-data-btn:hover {
+    background-color: rgba(187, 134, 252, 0.1);
+}
+
+select {
+    appearance: none; /* Quita el estilo por defecto del navegador */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23bb86fc%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 0.8em;
+}
+
+/* 8. Estilos para la lista de resultados */
+#quantitative-summary ul {
+    list-style: none;
+    padding: 0;
+}
+
+#quantitative-summary li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid #333;
+}
+
+#quantitative-summary li:last-child {
+    border-bottom: none;
+}
+
+#quantitative-summary strong {
+    color: var(--on-surface-secondary);
+}
+
+/* --- EFECTO DE MURO DE FUEGO PÚRPURA (CORREGIDO) --- */
+
+.fire-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 120px; /* 1. Aumentamos la altura para dar espacio al resplandor */
+    pointer-events: none;
+    /* 2. ELIMINAMOS 'overflow: hidden;' para que no se corte el brillo */
+}
+
+.flame {
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    width: 100%;
+    height: 5px; /* 3. Reducimos la altura para que la "fuente" sea una línea delgada */
+    background: transparent; /* 4. Hacemos el fondo invisible */
+    
+    /* Mantenemos las mismas sombras para el resplandor */
+    box-shadow: 
+        0px 0px 15px 5px #bb86fc,
+        0px -10px 25px 10px #8e44ad,
+        0px -25px 35px 20px #2c003e,
+        0px -40px 40px 30px #000;
+
+    animation: wave 4s ease-in-out infinite;
+    transform-origin: bottom center;
+}
+
+/* La animación @keyframes wave se queda igual */
+@keyframes wave {
+    0% {
+        transform: scaleY(1) scaleX(1.0) translateX(0px);
+        filter: blur(4px);
+    }
+    50% {
+        transform: scaleY(1.1) scaleX(1.02) translateX(10px);
+        filter: blur(6px);
+    }
+    100% {
+        transform: scaleY(1) scaleX(1.0) translateX(0px);
+        filter: blur(4px);
+    }
+}
