@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EL ORÁCULO DEL CAPITOLIO</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+    <header>
+        <h1>EL ORÁCULO DEL CAPITOLIO</h1>
+        <img src="imagenes/asd.png" alt="Descripción de la imagen" style="margin-left: 10px; height: 100px;">
+</div>
+    </header>
+    <main class="container">
+        <section class="control-panel">
+            <h2>Panel de Control</h2>
+            <div class="card">
+                <h3>1. Cargar Datos</h3>
+                <button id="upload-btn">Cargar archivo (CSV/JSON)</button>
+                <button id="sample-data-btn">Usar datos de prueba</button>
+            </div>
+            <div class="card">
+                <h3>2. Seleccionar Perspectiva</h3>
+                <label for="role-selector">Ver como:</label>
+                <select id="role-selector">
+                    <option value="student">Director</option>
+                    <option value="parent">Maestro</option>
+                    <option value="tutor">Alumno</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="results-area">
+            <h2>Área de Resultados</h2>
+            <div id="quantitative-summary" class="card">
+                <h3>Resumen Cuantitativo</h3>
+                <p>Aquí se mostrarán los gráficos y los promedios...</p>
+            </div>
+            <div id="oracle-interpretation" class="card">
+                <h3>Interpretación del Oráculo</h3>
+                <p>Esperando datos y una perspectiva para generar la interpretación...</p>
+            </div>
+        </section>
+    </main>
+    <div class="fire-container">
+        <div class="flame"></div>
+        <div class="flame"></div>
+        <div class="flame"></div>
+    </div>
+</body>
+</html>
