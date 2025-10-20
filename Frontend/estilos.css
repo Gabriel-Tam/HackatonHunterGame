@@ -1,18 +1,14 @@
-/* --- ESTILOS MEJORADOS PARA EL ORÁCULO DEL CAPITOLIO --- */
-
-/* 1. Importar una fuente moderna desde Google Fonts */
+/* --- ESTILOS GENERALES Y TEMA --- */
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap');
 
-/* 2. Variables de color para un tema cohesivo */
 :root {
-    --background-color: #121212; /* Fondo oscuro */
-    --surface-color: #1e1e1e;   /* Color de las tarjetas */
-    --primary-color: #bb86fc;   /* Color de acento (morado) */
-    --on-surface-color: #e0e0e0; /* Color del texto principal */
-    --on-surface-secondary: #a0a0a0; /* Color del texto secundario */
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --primary-color: #bb86fc;
+    --on-surface-color: #e0e0e0;
+    --on-surface-secondary: #a0a0a0;
 }
 
-/* 3. Estilos generales del cuerpo */
 body {
     font-family: 'Roboto', sans-serif;
     background-color: var(--background-color);
@@ -20,42 +16,41 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    padding-bottom: 70px; /* Debe ser igual a la altura del .fire-container */
+    padding-bottom: 70px; /* Espacio para el efecto de fuego */
 }
 
-/* 4. Encabezado temático */
 header {
     background: linear-gradient(to right, #1e1e1e, #121212);
     color: var(--primary-color);
-    text-align: center;
     padding: 1.5rem 0;
     border-bottom: 2px solid var(--primary-color);
     font-weight: 700;
     letter-spacing: 2px;
-    display: flex;            
-    justify-content: center;  
-    align-items: center;      
+    display: flex;
+    justify-content: center;
+    align-items: center;
     gap: 1.5rem;
 }
 
-/* 5. Contenedor principal con Flexbox */
 .container {
     display: flex;
-    flex-wrap: wrap; /* Para que se adapte en pantallas pequeñas */
+    flex-wrap: wrap;
     padding: 2rem;
     gap: 2rem;
+    position: relative; /* Permite que z-index funcione */
+    z-index: 2;         /* Coloca el contenido sobre el fuego */
 }
 
+/* --- ESTILOS DE PANELES Y TARJETAS --- */
 .control-panel, .results-area {
     flex: 1;
-    min-width: 300px; /* Ancho mínimo para responsividad */
+    min-width: 300px;
 }
 
 .results-area {
     flex: 2;
 }
 
-/* 6. Diseño de tarjetas (Cards) mejorado */
 .card {
     background-color: var(--surface-color);
     border-radius: 12px;
@@ -78,7 +73,7 @@ header {
     margin-bottom: 1rem;
 }
 
-/* 7. Estilos de botones y controles interactivos */
+/* --- ESTILOS DE CONTROLES (BOTONES, SELECTS) --- */
 button, select {
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
@@ -113,15 +108,27 @@ button:hover {
     background-color: rgba(187, 134, 252, 0.1);
 }
 
+#reset-btn {
+    width: auto;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    background-color: #6c757d;
+}
+
+#reset-btn:hover {
+    background-color: #a362ea;
+}
+
 select {
-    appearance: none; /* Quita el estilo por defecto del navegador */
+    appearance: none;
     background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23bb86fc%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
     background-repeat: no-repeat;
     background-position: right 1rem center;
     background-size: 0.8em;
 }
 
-/* 8. Estilos para la lista de resultados */
+/* --- ESTILOS DE RESULTADOS --- */
 #quantitative-summary ul {
     list-style: none;
     padding: 0;
@@ -140,49 +147,111 @@ select {
     color: var(--on-surface-secondary);
 }
 
-/* --- EFECTO DE MURO DE FUEGO PÚRPURA (CORREGIDO) --- */
+/* --- CLASE DE UTILIDAD PARA OCULTAR --- */
+.hidden {
+    display: none;
+}
 
+/* --- EFECTO DE MURO DE FUEGO PÚRPURA --- */
 .fire-container {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 120px; /* 1. Aumentamos la altura para dar espacio al resplandor */
+    height: 70px;
     pointer-events: none;
-    /* 2. ELIMINAMOS 'overflow: hidden;' para que no se corte el brillo */
+    z-index: 1; /* Capa 1: Detrás del contenido */
 }
 
 .flame {
     position: absolute;
-    bottom: 0px;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 5px; /* 3. Reducimos la altura para que la "fuente" sea una línea delgada */
-    background: transparent; /* 4. Hacemos el fondo invisible */
-    
-    /* Mantenemos las mismas sombras para el resplandor */
+    height: 5px;
+    background: transparent;
     box-shadow: 
-        0px 0px 15px 5px #bb86fc,
-        0px -10px 25px 10px #8e44ad,
-        0px -25px 35px 20px #2c003e,
-        0px -40px 40px 30px #000;
-
+        0px 0px 10px 3px #bb86fc,
+        0px -5px 15px 8px #8e44ad,
+        0px -15px 25px 15px #2c003e,
+        0px -25px 30px 20px #000;
     animation: wave 4s ease-in-out infinite;
     transform-origin: bottom center;
 }
 
-/* La animación @keyframes wave se queda igual */
 @keyframes wave {
-    0% {
-        transform: scaleY(1) scaleX(1.0) translateX(0px);
-        filter: blur(4px);
+    0% { transform: scaleY(1) scaleX(1.0) translateX(0px); filter: blur(4px); }
+    50% { transform: scaleY(1.1) scaleX(1.02) translateX(10px); filter: blur(6px); }
+    100% { transform: scaleY(1) scaleX(1.0) translateX(0px); filter: blur(4px); }
+}
+
+/* --- EFECTO DE CHISPAS ASCENDENTES --- */
+.spark {
+    position: absolute;
+    bottom: 0;
+    width: 3px;
+    height: 3px;
+    background: #f0e4ff;
+    border-radius: 50%;
+    box-shadow: 0 0 6px 2px #e1c4ff;
+    animation: rise 5s linear infinite;
+    opacity: 0;
+    z-index: 3; /* Capa 3: Sobre todo lo demás */
+}
+
+@keyframes rise {
+    0% { transform: translateY(0); opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-150px); opacity: 0; }
+}
+
+/* --- "Aleatoriedad" para cada chispa --- */
+.spark:nth-child(1) { left: 10%; animation-duration: 4s; animation-delay: 0.5s; }
+.spark:nth-child(2) { left: 20%; animation-duration: 3s; animation-delay: 1s; width: 2px; height: 2px; }
+.spark:nth-child(3) { left: 30%; animation-duration: 5s; animation-delay: 0.2s; }
+.spark:nth-child(4) { left: 40%; animation-duration: 3.5s; animation-delay: 2s; }
+.spark:nth-child(5) { left: 50%; animation-duration: 6s; animation-delay: 1.5s; width: 4px; height: 4px; }
+.spark:nth-child(6) { left: 60%; animation-duration: 4.2s; animation-delay: 3s; }
+.spark:nth-child(7) { left: 70%; animation-duration: 3.8s; animation-delay: 0.8s; }
+.spark:nth-child(8) { left: 80%; animation-duration: 5.5s; animation-delay: 2.5s; width: 2px; height: 2px; }
+.spark:nth-child(9) { left: 90%; animation-duration: 4.5s; animation-delay: 1.2s; }
+.spark:nth-child(10) { left: 95%; animation-duration: 6s; animation-delay: 0s; }
+
+/* --- ESTILOS RESPONSIVOS PARA MÓVILES --- */
+
+/* Se aplicará a cualquier pantalla con un ancho de 768px o menos */
+@media (max-width: 768px) {
+    
+    /* 1. Hacemos que el contenedor principal sea una sola columna */
+    .container {
+        flex-direction: column; /* Cambia de fila a columna */
+        padding: 1rem;
+        gap: 1rem;
     }
-    50% {
-        transform: scaleY(1.1) scaleX(1.02) translateX(10px);
-        filter: blur(6px);
+
+    /* 2. Ajustamos el encabezado para que no sea tan grande */
+    header {
+        padding: 1rem;
+        gap: 1rem;
     }
-    100% {
-        transform: scaleY(1) scaleX(1.0) translateX(0px);
-        filter: blur(4px);
+
+    header h1 {
+        font-size: 1.2rem; /* Reducimos el tamaño del título */
     }
+
+    header img {
+        height: 40px; /* Reducimos el tamaño del logo */
+    }
+
+    /* 3. Ajustamos el padding de las tarjetas */
+    .card {
+        padding: 1rem 1.2rem;
+    }
+
+    /* 4. Hacemos que la gráfica ocupe todo el ancho disponible */
+    #evaluationChart {
+        height: auto !important; /* Dejamos que la altura se ajuste */
+    }
+
+    
 }

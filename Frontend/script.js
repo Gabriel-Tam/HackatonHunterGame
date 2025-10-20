@@ -1,83 +1,117 @@
-// Archivo: script.js
+let myChart = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- 1. DATOS DE PRUEBA (sin cambios) ---
+
+    // --- 1. DATOS DE PRUEBA ---
     const sampleCitizenData = {
         nombre: "Katniss Everdeen",
         distrito: 12,
-        habilidades: {
-            supervivencia: 95,
-            punteria: 98,
-            carisma: 75,
-            estrategia: 85
-        },
+        rol: "Tributo",
+        area: "Distrito 12",
+        desempeno: "Sobresaliente",
         evaluacionGeneral: 88.25,
-        asistencia: 92,
-        colaboracion: 78
+        evaluationHistory: [90, 85, 90, 95, 88, 90, 85, 92, 85, 95, 90]
     };
 
-    // --- 2. REFERENCIAS A ELEMENTOS DEL HTML (añadimos el selector) ---
+    // --- 2. REFERENCIAS A ELEMENTOS DEL HTML ---
     const sampleDataBtn = document.getElementById('sample-data-btn');
-    const roleSelector = document.getElementById('role-selector'); // <-- Nueva referencia
+    const roleSelector = document.getElementById('role-selector');
     const quantitativeSummaryDiv = document.getElementById('quantitative-summary');
     const oracleInterpretationDiv = document.getElementById('oracle-interpretation');
-    
-    // Variable para guardar los datos actuales
-    let currentData = null;
+    const resultsArea = document.querySelector('.results-area');
+    const controlPanel = document.querySelector('.control-panel');
+    const resetBtn = document.getElementById('reset-btn');
 
-    // --- 3. FUNCIONES PARA ACTUALIZAR LA INTERFAZ ---
+    // --- 3. FUNCIONES ---
     function displayQuantitativeSummary(data) {
-        quantitativeSummaryDiv.innerHTML = '<h3>Resumen Cuantitativo</h3>';
+        const existingList = quantitativeSummaryDiv.querySelector('ul');
+        if (existingList) existingList.remove();
+
         const list = document.createElement('ul');
         list.innerHTML = `
-            <li><strong>Nombre:</strong> ${data.nombre}</li>
-            <li><strong>Evaluación General:</strong> ${data.evaluacionGeneral}%</li>
-            <li><strong>Asistencia:</strong> ${data.asistencia}%</li>
-            <li><strong>Colaboración:</strong> ${data.colaboracion}%</li>
+            <li><strong>Rol:</strong> ${data.rol}</li>
+            <li><strong>Área:</strong> ${data.area}</li>
+            <li><strong>Desempeño:</strong> ${data.desempeno}</li>
+            <li><strong>Evaluación:</strong> ${data.evaluacionGeneral}%</li>
         `;
-        quantitativeSummaryDiv.appendChild(list);
+        quantitativeSummaryDiv.insertBefore(list, document.querySelector('.chart-container'));
     }
 
-    /**
-     * FUNCIÓN ACTUALIZADA: Ahora genera texto según el rol.
-     * Aquí es donde conectarías el LLM en el futuro.
-     */
     function displayOracleInterpretation(data, role) {
         oracleInterpretationDiv.innerHTML = '<h3>Interpretación del Oráculo</h3>';
         let interpretationText = '';
-
-        // Usamos un switch para generar un "prompt" o texto diferente para cada rol
         switch (role) {
             case 'student':
-                interpretationText = `<p><strong>Hola, ${data.nombre}.</strong> Tus resultados muestran una <strong>evaluación general de ${data.evaluacionGeneral}%.</strong> ¡Sigue así! Tu punto más fuerte es la puntería, lo que indica una gran concentración. Considera participar en actividades que mejoren tu colaboración.</p>`;
+                interpretationText = `<p><strong>Informe para el Alumno:</strong> ${data.nombre}, tus resultados muestran una evaluación de ${data.evaluacionGeneral}%. Tu desempeño es ${data.desempeno}.</p>`;
                 break;
             case 'teacher':
-                interpretationText = `<p><strong>Reporte del estudiante ${data.nombre}:</strong> Presenta una evaluación general de <strong>${data.evaluacionGeneral}%.</strong> Se recomienda fomentar su participación en equipos para desarrollar la habilidad de colaboración (actualmente en ${data.colaboracion}%). Muestra una asistencia consistente del ${data.asistencia}%.</p>`;
+                interpretationText = `<p><strong>Reporte para el Maestro:</strong> El estudiante ${data.nombre} presenta una evaluación de ${data.evaluacionGeneral}%. Su desempeño general es ${data.desempeno}.</p>`;
                 break;
             case 'principal':
-                interpretationText = `<p><strong>Informe Ejecutivo - ${data.nombre} (Distrito ${data.distrito}):</strong> El activo muestra un rendimiento global del <strong>${data.evaluacionGeneral}%.</strong> Su perfil es de alto valor estratégico debido a sus habilidades de supervivencia y puntería. Se aconseja monitorear su progreso y potencial de liderazgo.</p>`;
+                interpretationText = `<p><strong>Informe para el Director:</strong> ${data.nombre} (Distrito ${data.distrito}) muestra un rendimiento de ${data.evaluacionGeneral}%. Perfil de alto valor estratégico.</p>`;
                 break;
-            default:
-                interpretationText = '<p>Selecciona una perspectiva para generar la interpretación.</p>';
         }
-
         oracleInterpretationDiv.innerHTML += interpretationText;
     }
 
-    // --- 4. EVENT LISTENERS PARA LOS CONTROLES ---
+    function processChartData(scores) {
+        const frequency = {};
+        for (const score of scores) {
+            frequency[score] = (frequency[score] || 0) + 1;
+        }
+        const sortedScores = Object.entries(frequency).sort((a, b) => b[1] - a[1]).slice(0, 3);
+        return {
+            labels: sortedScores.map(item => `Calificación: ${item[0]}`),
+            data: sortedScores.map(item => item[1])
+        };
+    }
+
+    function createPieChart(chartData) {
+        const ctx = document.getElementById('evaluationChart').getContext('2d');
+        if (myChart) myChart.destroy();
+        
+        myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: chartData.labels,
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: chartData.data,
+                    backgroundColor: ['rgba(187, 134, 252, 0.8)', 'rgba(142, 68, 173, 0.8)', 'rgba(240, 228, 255, 0.8)'],
+                    borderColor: '#1e1e1e',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { color: '#e0e0e0' } },
+                    title: { display: true, text: 'Top 3 Calificaciones Más Comunes', color: '#e0e0e0' }
+                }
+            }
+        });
+    }
+
+    // --- 4. EVENT LISTENERS ---
     sampleDataBtn.addEventListener('click', () => {
-        currentData = sampleCitizenData; // Guardamos los datos
         const selectedRole = roleSelector.value;
-        displayQuantitativeSummary(currentData);
-        displayOracleInterpretation(currentData, selectedRole);
+        displayQuantitativeSummary(sampleCitizenData);
+        displayOracleInterpretation(sampleCitizenData, selectedRole);
+        const chartData = processChartData(sampleCitizenData.evaluationHistory);
+        createPieChart(chartData);
+        resultsArea.classList.remove('hidden');
+        controlPanel.classList.add('hidden');
     });
     
-    // <-- NUEVO EVENT LISTENER para el menú desplegable -->
     roleSelector.addEventListener('change', () => {
-        // Solo actualiza la interpretación si ya se cargaron datos
-        if (currentData) {
-            const selectedRole = roleSelector.value;
-            displayOracleInterpretation(currentData, selectedRole);
-        }
+        const selectedRole = roleSelector.value;
+        displayOracleInterpretation(sampleCitizenData, selectedRole);
+    });
+
+    resetBtn.addEventListener('click', () => {
+        resultsArea.classList.add('hidden');
+        controlPanel.classList.remove('hidden');
+        if (myChart) myChart.destroy();
     });
 });
